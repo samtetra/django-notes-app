@@ -1,20 +1,21 @@
-FROM python:3.9
+FROM python:3.12-slim
 
 WORKDIR /app/backend
 
-COPY requirements.txt /app/backend
-RUN apt-get update \
-    && apt-get upgrade -y \
-    && apt-get install -y gcc default-libmysqlclient-dev pkg-config \
+# Install system deps first
+RUN apt-get update && apt-get install -y \
+    gcc \
+    default-libmysqlclient-dev \
+    pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
+# Copy only requirements first (cache)
+COPY requirements.txt .
 
-# Install app dependencies
-RUN pip install mysqlclient
+# Install python deps
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . /app/backend
+# Copy app code
+COPY . .
 
 EXPOSE 8000
-#RUN python manage.py migrate
-#RUN python manage.py makemigrations
