@@ -1,7 +1,6 @@
 version: "3.8"
 
 services:
-
   nginx:
     build: ./nginx
     container_name: nginx_cont
@@ -12,8 +11,6 @@ services:
     restart: always
     networks:
       - notes-net
-
-
   django:
     build: .
     container_name: django_cont
@@ -29,8 +26,6 @@ services:
     restart: always
     networks:
       - notes-net
-
-
   db:
     image: mysql:8.0
     container_name: db_cont
@@ -41,11 +36,7 @@ services:
     restart: always
     networks:
       - notes-net
-
-
 volumes:
   mysql_data:
-
-
 networks:
   notes-net:
